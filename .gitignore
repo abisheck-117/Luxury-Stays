@@ -1,0 +1,28 @@
+# Python virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# Pycache and compiled bytecodes
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# IDE settings
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Local logs and environment files
+*.log
+.env

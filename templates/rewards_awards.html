@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center mt-4">🏆 Rewards & Awards 🎉</h2>
+
+
+
+    <div class="card p-4 mt-3 border border-warning">
+        <h4>📜 Your Approved Bookings:</h4>
+        {% if new_bookings %}
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Room Type</th>
+                        <th>User Token</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in new_bookings %}
+                        <tr>
+                            <td>{{ booking.room_type }}</td>
+                            <td>{{ booking.user_token }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h5>Total Bookings: {{ new_bookings | length }}</h5>
+
+            <h5>Room Type Counts:</h5>
+            <ul>
+                {% for room_type, count in room_counts.items() %}
+                    <li>{{ room_type }}: {{ count }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No approved bookings found.</p>
+        {% endif %}
+    </div>
+
+    <div class="card p-4 mt-3 border border-warning">
+        <h4>🎁 Reward Criteria:</h4>
+        <ul>
+            <li>📌 <strong>SSB:</strong> Book 5 times → 6th booking is <b>FREE!</b></li>
+            <li>📌 <strong>SDB:</strong> Book 3 times → 4th booking is <b>FREE!</b></li>
+        </ul>
+    </div>
+
+    <div class="card p-4 mt-3 border border-warning">
+        <h4>🎯 Your Rewards & Cycle Progress:</h4>
+        
+        <h5 class="mt-3">🛏️ Standard Room - Single Bed (SSB) Progress:</h5>
+        <p>Total bookings: <strong>{{ ssb_count }}</strong> (Earned <b>{{ ssb_earned_free }}</b> free rooms historically)</p>
+        <p>Current cycle progress: <strong>{{ ssb_progress }} / 5</strong> paid bookings completed.</p>
+        {% if ssb_next_free %}
+            <p class="text-success" style="font-weight: bold;">🎉 Congratulations! Your next (6th) SSB booking will be FREE! 🎊</p>
+        {% else %}
+            <p class="text-secondary">❌ You need <strong>{{ ssb_needed }}</strong> more paid SSB bookings to earn a free 6th booking in this cycle.</p>
+        {% endif %}
+
+        <hr>
+
+        <h5>🛏️ Standard Room - Double Bed (SDB) Progress:</h5>
+        <p>Total bookings: <strong>{{ sdb_count }}</strong> (Earned <b>{{ sdb_earned_free }}</b> free rooms historically)</p>
+        <p>Current cycle progress: <strong>{{ sdb_progress }} / 3</strong> paid bookings completed.</p>
+        {% if sdb_next_free %}
+            <p class="text-success" style="font-weight: bold;">🏆 Great news! Your next (4th) SDB booking will be FREE! 🎊</p>
+        {% else %}
+            <p class="text-secondary">❌ You need <strong>{{ sdb_needed }}</strong> more paid SDB bookings to earn a free 4th booking in this cycle.</p>
+        {% endif %}
+    </div>
+
+    <div class="card p-4 mt-3 border border-warning">
+        <h4>✅ How to Claim Your Reward?</h4>
+        <p>Once you book your free room, the <strong>admin (hotel receptionist)</strong> will verify and approve your reward at check-in. Only after approval, the room will be assigned to you and Booking summary will be incremented.</p>
+        <p class="text-success">📝 Make sure to inform the receptionist about your reward at check-in!</p>
+    </div>
+</div>
+{% endblock %}
