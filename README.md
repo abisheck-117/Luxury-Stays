@@ -86,7 +86,8 @@ Here are placeholders for displaying screenshots of the application panels. You 
 ### 🏠 Customer Views
 
 #### Home Page - Hero Section
-![Home Page Hero](screenshots/home_hero.png)
+<img width="1872" height="901" alt="image" src="https://github.com/user-attachments/assets/7106fab8-48bb-49a4-a674-0434f4121a48" />
+
 
 #### Home Page - Features Overview
 ![Home Page Features](screenshots/home_features.png)
