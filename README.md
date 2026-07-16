@@ -81,7 +81,6 @@ python test_suite.py
 
 ## 📸 User Interface Screenshots
 
-Here are placeholders for displaying screenshots of the application panels. You can place your image files (e.g. PNG/JPG) into a `screenshots/` directory inside this repository and reference them as shown below:
 
 ### 🏠 Customer Views
 
