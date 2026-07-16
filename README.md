@@ -108,7 +108,7 @@ Here are placeholders for displaying screenshots of the application panels. You 
 
 #### Loyalty Rewards Portal
 <img width="1852" height="881" alt="image" src="https://github.com/user-attachments/assets/86968d1e-8b11-468f-8051-e8ce4f5ba26b" />
-<img width="1013" height="341" alt="image" src="https://github.com/user-attachments/assets/8b304a50-c97a-4fc8-914c-cb13c357bf39" />
+<img width="1878" height="895" alt="image" src="https://github.com/user-attachments/assets/634a9ca2-5e38-4844-9e95-d2c2b1854d4a" />
 <img width="1868" height="737" alt="image" src="https://github.com/user-attachments/assets/23e856e1-eedd-48e4-a79f-29528479da68" />
 
 
@@ -117,8 +117,7 @@ Here are placeholders for displaying screenshots of the application panels. You 
 ### 🛡️ Administration Views
 
 #### Admin Login Screen
-<img width="1878" height="895" alt="image" src="https://github.com/user-attachments/assets/634a9ca2-5e38-4844-9e95-d2c2b1854d4a" />
-
+<img width="1013" height="341" alt="image" src="https://github.com/user-attachments/assets/8b304a50-c97a-4fc8-914c-cb13c357bf39" />
 
 #### Admin Dashboard (Bookings Panel) - Aditional with user management and dynamic tariff predictions
 <img width="1912" height="418" alt="image" src="https://github.com/user-attachments/assets/491b3e41-3204-4c90-bd9b-07a06e4c7e0d" />
