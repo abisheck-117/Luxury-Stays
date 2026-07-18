@@ -75,6 +75,13 @@ def init_db_rooms():
                 })
             db.rooms.insert_many(rooms_data)
             print("Successfully auto-seeded rooms database!")
+
+        if db.admins.count_documents({}) == 0:
+            db.admins.insert_one({
+                "username": "admin",
+                "password": generate_password_hash("admin123")
+            })
+            print("Successfully auto-seeded admin user!")
     except Exception as e:
         print("Database auto-seed check exception:", e)
 
