@@ -1,19 +1,26 @@
 # Hotel Management & Dynamic Tariff Prediction System
 
-A comprehensive, full-stack web application built with **Flask** and **MongoDB** for managing hotel bookings, customer loyalty rewards, and automated room tariff adjustments. The project integrates a **Random Forest Regressor** machine learning model to recommend optimized pricing tariffs based on historical stay demands and occupancy rates.
+A comprehensive, full-stack web application built with **Flask**, **MongoDB / MongoDB Atlas**, and **Gunicorn** for managing hotel bookings, customer loyalty rewards, and automated room tariff adjustments. The project integrates a **Random Forest Regressor** machine learning model to recommend optimized pricing tariffs based on historical stay demands and occupancy rates.
+
+🌐 **Live Production Deployment**: [https://luxury-stays-qyem.onrender.com](https://luxury-stays-qyem.onrender.com)
 
 ---
 
 ## 🌟 Key Features
 
 ### 👤 Customer Portal
-*   **Secure Authentication**: Hashed password registration and login flows.
-*   **Interactive Catalog**: Browse suites and rooms with check-in/check-out date validators.
-*   **Loyalty Rewards Dashboard**: Dynamic modulo-based stay cycle tracking (every 6th SSB stay and every 4th SDB stay is free) displaying active progress indicators.
-*   **Booking Overview**: View, verify, and cancel active room reservations.
+*   **Secure Authentication**: Hashed password registration and login flows with unique token generation.
+*   **Interactive Corner Tour**: Detailed multi-angle room corner showcase (Sleeping Area, Ensuite Bathroom, Executive Work Desk, Refreshment/Mini Bar) for both Single Bed & Double Bed suites.
+*   **5-Star Quick Reservation Bar**: Date-picker search widget with automated check-in and check-out validators.
+*   **Interactive Catalog**: Glassmorphic room cards with floating status badges (`Available`, `Booked`, `Locked`), quick specs, and facilities modals.
+*   **Loyalty Rewards Dashboard**: Gamified stay cycle progress tracking (every 6th SSB stay and every 4th SDB stay is free) with milestone indicators.
+*   **Booking Overview**: View, verify, and cancel active room reservations with stayed time durations (`Check-In ➔ Check-Out`).
 
 ### 🔑 Administration Panel
-*   **Secured Dashboard**: Requires admin session validation to manage bookings.
+*   **Secured Dashboard**: Requires admin session validation to manage guest bookings.
+*   **Default Admin Credentials**:
+    *   **Username**: `admin`
+    *   **Password**: `admin123`
 *   **Booking Manager**: Approve pending bookings (automatically archiving them to stay history) or reject them (releasing rooms back to inventory).
 *   **Maintenance Room Lock**: Custom date-picker controls to lock specific rooms for maintenance and release them back to availability.
 *   **User Registry Manager**: View user stay statistics, frequency profiles, and delete inactive records.
@@ -27,19 +34,29 @@ A comprehensive, full-stack web application built with **Flask** and **MongoDB**
 ---
 
 ## 🛠️ Technology Stack
-*   **Backend**: Python, Flask, PyMongo, scikit-learn, pandas, numpy
-*   **Frontend**: HTML5, CSS3 (Vanilla), JavaScript, Bootstrap 5, FontAwesome
-*   **Database**: MongoDB (Local Instance)
+*   **Backend**: Python, Flask, PyMongo, scikit-learn, pandas, numpy, Gunicorn
+*   **Frontend**: HTML5, Vanilla CSS3, JavaScript, Bootstrap 5, FontAwesome
+*   **Database**: MongoDB (Local Instance) & MongoDB Atlas (Cloud Database)
+*   **Deployment**: Render (Production Cloud Host), Vercel configuration, Gunicorn WSGI
 *   **Testing**: Python unittest framework
 
 ---
 
-## 🚀 Local Setup Instructions
+## 🚀 Deployment & Local Setup Instructions
 
-### Prerequisite
+### Live Cloud Deployment (Render + MongoDB Atlas)
+The project is configured with a 1-click build setup:
+*   `Procfile`: `web: gunicorn app:app`
+*   `PYTHON_VERSION`: `3.10.13`
+*   `render.yaml`: Automated build and start configuration.
+*   Auto-seeding database helper initializes default rooms and admin user if cloud database is fresh.
+
+### Local Setup Instructions
+
+#### Prerequisite
 Ensure a local instance of **MongoDB** is running on your system at `mongodb://localhost:27017/`.
 
-### 1. Initialize Virtual Environment
+#### 1. Initialize Virtual Environment
 Open terminal in the project directory and run:
 ```powershell
 # Create environment
@@ -49,18 +66,18 @@ python -m venv venv
 .\venv\Scripts\activate
 ```
 
-### 2. Install Dependencies
+#### 2. Install Dependencies
 ```powershell
 pip install -r requirements.txt
 ```
 
-### 3. Initialize Rooms Database
+#### 3. Initialize Rooms Database
 Run the setup script to seed available rooms into MongoDB:
 ```powershell
 python roomsadd.py
 ```
 
-### 4. Start the Application
+#### 4. Start the Application
 ```powershell
 python app.py
 ```
@@ -125,4 +142,3 @@ python test_suite.py
 #### Admin Room Access Control Management - url(admin/admin_room_access)
 
 <img width="1912" height="648" alt="image" src="https://github.com/user-attachments/assets/a82aceb6-dff8-4bc2-b132-6f4dbff3d5fa" />
-
