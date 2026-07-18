@@ -27,6 +27,59 @@ if os.environ.get('MONGO_URI') or os.environ.get('MONGODB_URI'):
 else:
     db = client["hotel_management"]
 
+# ✅ Auto-seed rooms database if empty (ensures deployed site has rooms)
+def init_db_rooms():
+    try:
+        if db.rooms.count_documents({}) == 0:
+            single_bed_facilities = [
+                {"icon": "fa-wifi", "name": "Free High-Speed Wi-Fi", "category": "Tech"},
+                {"icon": "fa-snowflake", "name": "Air Conditioning", "category": "Comfort"},
+                {"icon": "fa-tv", "name": "43\" Smart HD TV", "category": "Entertainment"},
+                {"icon": "fa-bed", "name": "Single Premium Bed", "category": "Comfort"},
+                {"icon": "fa-shower", "name": "Private Hot Shower", "category": "Bathroom"},
+                {"icon": "fa-mug-hot", "name": "Coffee & Tea Maker", "category": "Refreshments"},
+                {"icon": "fa-shield-halved", "name": "Digital Safe", "category": "Security"},
+                {"icon": "fa-concierge-bell", "name": "24/7 Room Service", "category": "Services"}
+            ]
+            double_bed_facilities = [
+                {"icon": "fa-wifi", "name": "Ultra High-Speed Wi-Fi", "category": "Tech"},
+                {"icon": "fa-snowflake", "name": "Dual Climate Control", "category": "Comfort"},
+                {"icon": "fa-tv", "name": "55\" 4K Smart TV", "category": "Entertainment"},
+                {"icon": "fa-bed", "name": "Deluxe King Bed", "category": "Comfort"},
+                {"icon": "fa-shower", "name": "Rainfall Hot Shower", "category": "Bathroom"},
+                {"icon": "fa-wine-glass-empty", "name": "Mini Bar & Espresso", "category": "Refreshments"},
+                {"icon": "fa-shield-halved", "name": "Digital Safe", "category": "Security"},
+                {"icon": "fa-bath", "name": "Luxury Bathrobes & Toiletries", "category": "Bathroom"},
+                {"icon": "fa-concierge-bell", "name": "24/7 Priority Room Service", "category": "Services"}
+            ]
+            rooms_data = []
+            for i in range(1, 11):
+                rooms_data.append({
+                    'room_type': 'Standard Room - Single Bed',
+                    'room_number': f'SSB-{i}',
+                    'status': 'available',
+                    'user_token': None,
+                    'price_per_day': 1000,
+                    'free_date': None,
+                    'facilities': single_bed_facilities
+                })
+            for i in range(1, 11):
+                rooms_data.append({
+                    'room_type': 'Standard Room - Double Bed',
+                    'room_number': f'SDB-{i}',
+                    'status': 'available',
+                    'user_token': None,
+                    'price_per_day': 1500,
+                    'free_date': None,
+                    'facilities': double_bed_facilities
+                })
+            db.rooms.insert_many(rooms_data)
+            print("Successfully auto-seeded rooms database!")
+    except Exception as e:
+        print("Database auto-seed check exception:", e)
+
+init_db_rooms()
+
 
 
 
