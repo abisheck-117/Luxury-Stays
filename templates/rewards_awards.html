@@ -1,80 +1,233 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-    <h2 class="text-center mt-4">🏆 Rewards & Awards 🎉</h2>
-
-
-
-    <div class="card p-4 mt-3 border border-warning">
-        <h4>📜 Your Approved Bookings:</h4>
-        {% if new_bookings %}
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Room Type</th>
-                        <th>User Token</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for booking in new_bookings %}
-                        <tr>
-                            <td>{{ booking.room_type }}</td>
-                            <td>{{ booking.user_token }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-
-            <h5>Total Bookings: {{ new_bookings | length }}</h5>
-
-            <h5>Room Type Counts:</h5>
-            <ul>
-                {% for room_type, count in room_counts.items() %}
-                    <li>{{ room_type }}: {{ count }}</li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No approved bookings found.</p>
-        {% endif %}
-    </div>
-
-    <div class="card p-4 mt-3 border border-warning">
-        <h4>🎁 Reward Criteria:</h4>
-        <ul>
-            <li>📌 <strong>SSB:</strong> Book 5 times → 6th booking is <b>FREE!</b></li>
-            <li>📌 <strong>SDB:</strong> Book 3 times → 4th booking is <b>FREE!</b></li>
-        </ul>
-    </div>
-
-    <div class="card p-4 mt-3 border border-warning">
-        <h4>🎯 Your Rewards & Cycle Progress:</h4>
+<div class="container py-4">
+    <!-- Hero Header -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold mb-2" style="color: var(--primary-color);">
+            <i class="fas fa-trophy text-warning me-2"></i>VIP Loyalty Rewards & Free Stay Tracker
+        </h1>
+        <p class="lead text-muted">Earn points with every stay and unlock 100% FREE luxury room nights!</p>
         
-        <h5 class="mt-3">🛏️ Standard Room - Single Bed (SSB) Progress:</h5>
-        <p>Total bookings: <strong>{{ ssb_count }}</strong> (Earned <b>{{ ssb_earned_free }}</b> free rooms historically)</p>
-        <p>Current cycle progress: <strong>{{ ssb_progress }} / 5</strong> paid bookings completed.</p>
-        {% if ssb_next_free %}
-            <p class="text-success" style="font-weight: bold;">🎉 Congratulations! Your next (6th) SSB booking will be FREE! 🎊</p>
-        {% else %}
-            <p class="text-secondary">❌ You need <strong>{{ ssb_needed }}</strong> more paid SSB bookings to earn a free 6th booking in this cycle.</p>
-        {% endif %}
-
-        <hr>
-
-        <h5>🛏️ Standard Room - Double Bed (SDB) Progress:</h5>
-        <p>Total bookings: <strong>{{ sdb_count }}</strong> (Earned <b>{{ sdb_earned_free }}</b> free rooms historically)</p>
-        <p>Current cycle progress: <strong>{{ sdb_progress }} / 3</strong> paid bookings completed.</p>
-        {% if sdb_next_free %}
-            <p class="text-success" style="font-weight: bold;">🏆 Great news! Your next (4th) SDB booking will be FREE! 🎊</p>
-        {% else %}
-            <p class="text-secondary">❌ You need <strong>{{ sdb_needed }}</strong> more paid SDB bookings to earn a free 4th booking in this cycle.</p>
-        {% endif %}
+        <!-- Summary Stats Pills -->
+        <div class="d-flex justify-content-center gap-3 flex-wrap mt-3">
+            <span class="badge bg-dark text-warning border border-warning px-3 py-2 fs-6 rounded-pill shadow-sm">
+                <i class="fas fa-key me-1"></i> Token: <strong>{{ session.get('user_token') }}</strong>
+            </span>
+            <span class="badge bg-primary px-3 py-2 fs-6 rounded-pill shadow-sm">
+                <i class="fas fa-bed me-1"></i> Total Stays: <strong>{{ ssb_count + sdb_count }}</strong>
+            </span>
+            <span class="badge bg-success px-3 py-2 fs-6 rounded-pill shadow-sm">
+                <i class="fas fa-gift me-1"></i> Free Stays Earned: <strong>{{ ssb_earned_free + sdb_earned_free }}</strong>
+            </span>
+        </div>
     </div>
 
-    <div class="card p-4 mt-3 border border-warning">
-        <h4>✅ How to Claim Your Reward?</h4>
-        <p>Once you book your free room, the <strong>admin (hotel receptionist)</strong> will verify and approve your reward at check-in. Only after approval, the room will be assigned to you and Booking summary will be incremented.</p>
-        <p class="text-success">📝 Make sure to inform the receptionist about your reward at check-in!</p>
+    <!-- Gamified Cycle Progress Cards -->
+    <div class="row g-4 mb-5">
+        <!-- SINGLE BED PROGRESS CARD -->
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative">
+                <div class="card-header bg-dark text-white p-4 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="fw-bold mb-0 text-warning"><i class="fas fa-bed me-2"></i>Single Bed Suite (SSB)</h4>
+                        <small class="text-white-50">Book 5 Paid Stays -> 6th Stay is FREE!</small>
+                    </div>
+                    <span class="badge bg-warning text-dark fs-6 rounded-pill fw-bold">Cycle Goal: 5 Stays</span>
+                </div>
+                
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="fw-bold text-dark">Current Cycle Progress:</span>
+                        <span class="badge bg-primary fs-6">{{ ssb_progress }} / 5 Completed</span>
+                    </div>
+
+                    <!-- Animated Progress Bar -->
+                    <div class="progress mb-4" style="height: 22px; border-radius: 12px; background: #e2e8f0;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning text-dark fw-bold" role="progressbar" 
+                             style="width: {{ (ssb_progress / 5) * 100 }}%;" 
+                             aria-valuenow="{{ ssb_progress }}" aria-valuemin="0" aria-valuemax="5">
+                            {{ (ssb_progress / 5) * 100 | round | int }}%
+                        </div>
+                    </div>
+
+                    <!-- Milestone Dots -->
+                    <div class="d-flex justify-content-between text-center mb-4 px-1">
+                        {% for step in range(1, 6) %}
+                            <div class="milestone-step">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-1 fw-bold shadow-sm"
+                                     style="width: 36px; height: 36px; {{ 'background: #f59e0b; color: white;' if step <= ssb_progress else 'background: #e2e8f0; color: #64748b;' }}">
+                                    {{ step }}
+                                </div>
+                                <small class="text-muted" style="font-size: 0.75rem;">Stay {{ step }}</small>
+                            </div>
+                        {% endfor %}
+                        <div class="milestone-step">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-1 fw-bold shadow-sm"
+                                 style="width: 36px; height: 36px; {{ 'background: #10b981; color: white;' if ssb_next_free else 'background: #fef08a; color: #854d0e; border: 2px dashed #eab308;' }}">
+                                <i class="fas fa-gift"></i>
+                            </div>
+                            <small class="fw-bold text-success" style="font-size: 0.75rem;">FREE 6th</small>
+                        </div>
+                    </div>
+
+                    <!-- Status Notification Box (Only displayed when reward is unlocked) -->
+                    {% if ssb_next_free %}
+                        <div class="alert alert-success border-0 shadow-sm rounded-3 text-center mb-0 p-3">
+                            <h6 class="fw-bold mb-1"><i class="fas fa-circle-check me-1"></i> Congratulations! Your next (6th) SSB booking will be FREE!</h6>
+                            <p class="small mb-0">Select Single Bed in Booking to claim your free reward stay!</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="card-footer bg-light p-3 text-center">
+                    <small class="text-muted">Total SSB Stays: <strong>{{ ssb_count }}</strong> | Earned <strong>{{ ssb_earned_free }}</strong> free rooms historically (5 stays per cycle)</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- DOUBLE BED PROGRESS CARD -->
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-lg border-0 rounded-4 overflow-hidden position-relative">
+                <div class="card-header bg-dark text-white p-4 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="fw-bold mb-0 text-info"><i class="fas fa-hotel me-2"></i>Double Bed Suite (SDB)</h4>
+                        <small class="text-white-50">Book 3 Paid Stays -> 4th Stay is FREE!</small>
+                    </div>
+                    <span class="badge bg-info text-dark fs-6 rounded-pill fw-bold">Cycle Goal: 3 Stays</span>
+                </div>
+
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="fw-bold text-dark">Current Cycle Progress:</span>
+                        <span class="badge bg-info text-dark fs-6">{{ sdb_progress }} / 3 Completed</span>
+                    </div>
+
+                    <!-- Animated Progress Bar -->
+                    <div class="progress mb-4" style="height: 22px; border-radius: 12px; background: #e2e8f0;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-info text-dark fw-bold" role="progressbar" 
+                             style="width: {{ (sdb_progress / 3) * 100 }}%;" 
+                             aria-valuenow="{{ sdb_progress }}" aria-valuemin="0" aria-valuemax="3">
+                            {{ (sdb_progress / 3) * 100 | round | int }}%
+                        </div>
+                    </div>
+
+                    <!-- Milestone Dots -->
+                    <div class="d-flex justify-content-around text-center mb-4 px-2">
+                        {% for step in range(1, 4) %}
+                            <div class="milestone-step">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-1 fw-bold shadow-sm"
+                                     style="width: 40px; height: 40px; {{ 'background: #06b6d4; color: white;' if step <= sdb_progress else 'background: #e2e8f0; color: #64748b;' }}">
+                                    {{ step }}
+                                </div>
+                                <small class="text-muted" style="font-size: 0.75rem;">Stay {{ step }}</small>
+                            </div>
+                        {% endfor %}
+                        <div class="milestone-step">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-1 fw-bold shadow-sm"
+                                 style="width: 40px; height: 40px; {{ 'background: #10b981; color: white;' if sdb_next_free else 'background: #cff4fc; color: #055160; border: 2px dashed #0dcaf0;' }}">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <small class="fw-bold text-success" style="font-size: 0.75rem;">FREE 4th</small>
+                        </div>
+                    </div>
+
+                    <!-- Status Notification Box (Only displayed when reward is unlocked) -->
+                    {% if sdb_next_free %}
+                        <div class="alert alert-success border-0 shadow-sm rounded-3 text-center mb-0 p-3">
+                            <h6 class="fw-bold mb-1"><i class="fas fa-circle-check me-1"></i> Great news! Your next (4th) SDB booking will be FREE!</h6>
+                            <p class="small mb-0">Select Double Bed in Booking to claim your free reward stay!</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="card-footer bg-light p-3 text-center">
+                    <small class="text-muted">Total SDB Stays: <strong>{{ sdb_count }}</strong> | Earned <strong>{{ sdb_earned_free }}</strong> free rooms historically</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Approved Booking History Table -->
+    <div class="card shadow-sm border-0 rounded-4 mb-4">
+        <div class="card-header bg-dark text-white p-3 px-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <h5 class="mb-0 fw-bold"><i class="fas fa-receipt me-2 text-warning"></i>Your Approved Booking History</h5>
+            <span class="badge bg-secondary rounded-pill fs-6">{{ new_bookings|length }} Approved Records</span>
+        </div>
+        <div class="card-body p-4">
+            {% if new_bookings %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Suite Type</th>
+                                <th>Room #</th>
+                                <th>Stayed Time (Check-In ➔ Check-Out)</th>
+                                <th>User Token</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in new_bookings %}
+                                <tr>
+                                    <td><span class="badge bg-secondary">{{ loop.index }}</span></td>
+                                    <td class="fw-bold text-dark">
+                                        <i class="fas {{ 'fa-bed text-warning' if 'Single' in booking.room_type else 'fa-hotel text-info' }} me-2"></i>
+                                        {{ booking.room_type }}
+                                    </td>
+                                    <td><span class="badge bg-dark">{{ booking.room_number if booking.room_number else 'Assigned' }}</span></td>
+                                    <td>
+                                        <span class="fw-semibold text-secondary">
+                                            <i class="fas fa-calendar-alt me-1 text-primary"></i>
+                                            {% if booking.check_in %}
+                                                {{ booking.check_in.strftime('%b %d, %Y') if booking.check_in.strftime is defined else booking.check_in }}
+                                                <i class="fas fa-arrow-right mx-1 text-muted"></i>
+                                                {{ booking.check_out.strftime('%b %d, %Y') if booking.check_out.strftime is defined else booking.check_out }}
+                                            {% else %}
+                                                Confirmed Stay
+                                            {% endif %}
+                                        </span>
+                                    </td>
+                                    <td><span class="badge bg-dark text-white">{{ booking.user_token }}</span></td>
+                                    <td><span class="badge bg-success rounded-pill px-3"><i class="fas fa-check-circle me-1"></i>Approved</span></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-4 text-muted">
+                    <i class="fas fa-folder-open fa-3x mb-2 text-secondary"></i>
+                    <p class="mb-0">No approved booking history found yet. Complete a stay to start earning rewards!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- How to Claim Reward Section -->
+    <div class="card shadow-sm border-0 rounded-4 p-4" style="background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);">
+        <h5 class="fw-bold text-dark mb-3"><i class="fas fa-circle-question text-primary me-2"></i>How to Claim Your Free Reward Stay?</h5>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="p-3 bg-white rounded-3 shadow-sm h-100 border-start border-4 border-warning">
+                    <h6 class="fw-bold text-dark"><span class="badge bg-warning text-dark me-2">1</span>Reach Milestone</h6>
+                    <p class="small text-muted mb-0">Complete 5 paid Single Bed or 3 paid Double Bed stays to trigger your free stay award.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 bg-white rounded-3 shadow-sm h-100 border-start border-4 border-info">
+                    <h6 class="fw-bold text-dark"><span class="badge bg-info text-dark me-2">2</span>Book Suite</h6>
+                    <p class="small text-muted mb-0">Book your qualifying suite via the online portal. Our system automatically detects your reward entitlement.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 bg-white rounded-3 shadow-sm h-100 border-start border-4 border-success">
+                    <h6 class="fw-bold text-dark"><span class="badge bg-success me-2">3</span>Reception Check-in</h6>
+                    <p class="small text-muted mb-0">Inform the front desk receptionist upon arrival. The admin approves your zero-cost stay instantly!</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

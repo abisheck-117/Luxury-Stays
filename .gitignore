@@ -26,3 +26,4 @@ Thumbs.db
 # Local logs and environment files
 *.log
 .env
+api.txt

@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session,jsonify
+import os
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from flask_cors import CORS
 from pymongo import MongoClient
 from functools import wraps
@@ -7,7 +8,7 @@ import pandas as pd
 import numpy as np
 import pickle
 import random
-from datetime import datetime,timedelta
+from datetime import datetime, timedelta
 
 import uuid
 from bson import ObjectId  # Import ObjectId
@@ -15,10 +16,16 @@ from bson import ObjectId  # Import ObjectId
 
 app = Flask(__name__)
 CORS(app)
-app.config['SECRET_KEY'] = '5f8c3b1a9d7e4f2c6a0b8e1d3c7f9a4e'
-# ✅ MongoDB connection
-client = MongoClient("mongodb://localhost:27017/")
-db = client["hotel_management"]
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', '5f8c3b1a9d7e4f2c6a0b8e1d3c7f9a4e')
+
+# ✅ Production & Local MongoDB Connection Support
+mongo_uri = os.environ.get('MONGO_URI') or os.environ.get('MONGODB_URI') or "mongodb://localhost:27017/"
+client = MongoClient(mongo_uri)
+
+if os.environ.get('MONGO_URI') or os.environ.get('MONGODB_URI'):
+    db = client.get_default_database(default='hotel_management')
+else:
+    db = client["hotel_management"]
 
 
 
@@ -237,8 +244,61 @@ def rooms():
                                user_token=user_token, 
                               )
 
-    rooms = db.rooms.find()
-    return render_template('rooms.html', rooms=rooms)
+    raw_rooms = list(db.rooms.find())
+    
+    default_ssb_facilities = [
+        {"icon": "fa-wifi", "name": "Free High-Speed Wi-Fi", "category": "Tech"},
+        {"icon": "fa-snowflake", "name": "Air Conditioning & Climate Control", "category": "Comfort"},
+        {"icon": "fa-tv", "name": "43\" Smart HD TV", "category": "Entertainment"},
+        {"icon": "fa-bed", "name": "Single Plush Bed & Premium Linens", "category": "Bedding"},
+        {"icon": "fa-shower", "name": "Private Bathroom & Hot Shower", "category": "Bathroom"},
+        {"icon": "fa-mug-hot", "name": "Coffee & Tea Station", "category": "Refreshments"},
+        {"icon": "fa-shield-halved", "name": "Digital Safety Safe", "category": "Security"},
+        {"icon": "fa-concierge-bell", "name": "24/7 Room Service & Housekeeping", "category": "Services"}
+    ]
+    
+    default_sdb_facilities = [
+        {"icon": "fa-wifi", "name": "Ultra High-Speed Wi-Fi", "category": "Tech"},
+        {"icon": "fa-snowflake", "name": "Dual-Zone Climate Control", "category": "Comfort"},
+        {"icon": "fa-tv", "name": "55\" 4K Ultra HD Smart TV", "category": "Entertainment"},
+        {"icon": "fa-bed", "name": "Deluxe King Bed & Luxury Linens", "category": "Bedding"},
+        {"icon": "fa-shower", "name": "Spacious Bathroom with Rainfall Shower", "category": "Bathroom"},
+        {"icon": "fa-wine-glass-empty", "name": "Fully Stocked Mini Bar & Espresso", "category": "Refreshments"},
+        {"icon": "fa-shield-halved", "name": "Digital In-Room Safe Box", "category": "Security"},
+        {"icon": "fa-bath", "name": "Luxury Bathrobes & Plush Towels", "category": "Bathroom"},
+        {"icon": "fa-concierge-bell", "name": "24/7 Priority Room Service", "category": "Services"}
+    ]
+    
+    single_bed_images = [
+        "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80"
+    ]
+
+    double_bed_images = [
+        "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=800&q=80"
+    ]
+    
+    for idx, room in enumerate(raw_rooms):
+        if 'facilities' not in room or not room['facilities']:
+            if 'Single' in room.get('room_type', ''):
+                room['facilities'] = default_ssb_facilities
+            else:
+                room['facilities'] = default_sdb_facilities
+        
+        if 'image' not in room or not room['image']:
+            if 'Single' in room.get('room_type', ''):
+                room['image'] = single_bed_images[idx % len(single_bed_images)]
+            else:
+                room['image'] = double_bed_images[idx % len(double_bed_images)]
+
+    return render_template('rooms.html', rooms=raw_rooms)
 
 
 
@@ -252,6 +312,19 @@ def reserved():
     
     # Fetch rooms where the user_token matches the logged-in user's token
     reserved_rooms = list(db.rooms.find({'user_token': user_token}))
+    
+    single_img = "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=800&q=80"
+    double_img = "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80"
+
+    for r in reserved_rooms:
+        if 'image' not in r or not r['image']:
+            r['image'] = single_img if 'Single' in r.get('room_type', '') else double_img
+        
+        booking_doc = db.bookings.find_one({'room_number': r['room_number'], 'user_token': user_token})
+        if booking_doc:
+            r['check_in'] = booking_doc.get('check_in')
+            r['check_out'] = booking_doc.get('check_out')
+            r['booking_status'] = booking_doc.get('status', 'Pending')
 
     return render_template('reserved.html', rooms=reserved_rooms)
 
@@ -782,4 +855,5 @@ def predict():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)

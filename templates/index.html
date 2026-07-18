@@ -1,14 +1,19 @@
 {% extends "base.html" %}
 {% block content %}
 <!-- Hero Section -->
-<div class="hero-section text-center py-5 mb-5" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center; background-size: cover;width: 100%; height: 500px; display: flex; align-items: center; justify-content: center; color: white; margin-top: -1.5rem; margin-bottom: 3rem !important;">
+<div class="hero-section text-center py-5 mb-5"
+    style="background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') no-repeat center center; background-size: cover; width: 100%; height: 500px; display: flex; align-items: center; justify-content: center; color: white; margin-top: -1.5rem; margin-bottom: 3rem !important;">
     <div class="container">
         {% if 'user_id' in session %}
-        <h1 class="display-3 mb-4 animate__animated animate__fadeInDown" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Welcome Back!</h1>
-        <p class="lead mb-4 animate__animated animate__fadeInUp" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">Ready to book your next luxurious stay?</p>
+        <h1 class="display-3 mb-4 animate__animated animate__fadeInDown"
+            style="text-shadow: 2px 2px 6px rgba(0,0,0,0.6);">Welcome Back!</h1>
+        <p class="lead mb-4 animate__animated animate__fadeInUp" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.6);">Ready
+            to explore and book your next luxurious stay?</p>
         {% else %}
-        <h1 class="display-3 mb-4 animate__animated animate__fadeInDown" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Welcome to Luxury Stays</h1>
-        <p class="lead mb-4 animate__animated animate__fadeInUp" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">Experience unparalleled luxury and comfort in our premium accommodations</p>
+        <h1 class="display-3 mb-4 animate__animated animate__fadeInDown"
+            style="text-shadow: 2px 2px 6px rgba(0,0,0,0.6);">Welcome to Luxury Stays</h1>
+        <p class="lead mb-4 animate__animated animate__fadeInUp" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.6);">
+            Experience unparalleled luxury, comfort, and state-of-the-art suite designs</p>
         {% endif %}
     </div>
 </div>
@@ -21,7 +26,8 @@
                 <div class="card-body">
                     <i class="fas fa-concierge-bell fa-3x mb-3 icon-animate" style="color: var(--accent-color);"></i>
                     <h3 class="card-title">Premium Service</h3>
-                    <p class="card-text">Experience world-class service with our dedicated staff available 24/7.</p>
+                    <p class="card-text">Experience world-class hospitality with our dedicated concierge staff available
+                        24/7.</p>
                 </div>
             </div>
         </div>
@@ -30,7 +36,8 @@
                 <div class="card-body">
                     <i class="fas fa-spa fa-3x mb-3 icon-animate" style="color: var(--secondary-color);"></i>
                     <h3 class="card-title">Luxury Amenities</h3>
-                    <p class="card-text">Enjoy our premium amenities including spa, gym, and fine dining restaurants.</p>
+                    <p class="card-text">Enjoy our premium amenities including spa, gym, and fine dining restaurants.
+                    </p>
                 </div>
             </div>
         </div>
@@ -39,32 +46,152 @@
                 <div class="card-body">
                     <i class="fas fa-map-marked-alt fa-3x mb-3 icon-animate" style="color: var(--accent-color);"></i>
                     <h3 class="card-title">Prime Location</h3>
-                    <p class="card-text">Situated in the heart of the city with easy access to major attractions.</p>
-                </div>
-            </div>
-        </div>  
-    </div>
-
-    <!-- Room Types Section -->
-    <h2 class="text-center mb-4 animate__animated animate__fadeIn">Our Luxurious Rooms</h2>
-    <div class="row mb-5">
-        <div class="col-md-6 mb-4">
-            <div class="card room-card hover-effect">
-                <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" class="card-img-top" alt="AC Room" style="height: 300px; object-fit: cover;">
-                <div class="card-body">
-                    <h4 class="card-title">AC Single-Bed Room</h4>
-                    <p class="card-text">Luxurious rooms with modern amenities and comfortable furnishings.</p>
-                    <!-- <a href="{{ url_for('booking') }}" class="btn btn-primary">Book Now</a> -->
+                    <p class="card-text">Situated in the heart of the city with easy access to major attractions &
+                        airport.</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-6 mb-4">
-            <div class="card room-card hover-effect">
-                <img src="https://images.unsplash.com/photo-1590490359683-658d3d23f972?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" class="card-img-top" alt="Non-AC Room" style="height: 300px; object-fit: cover;">
-                <div class="card-body">
-                    <h4 class="card-title">AC Double-Bed Room</h4>
-                    <p class="card-text">Comfortable rooms with natural ventilation and all essential amenities.</p>
-                    <!-- <a href="{{ url_for('booking') }}" class="btn btn-primary">Book Now</a> -->
+    </div>
+
+    <!-- Room Types & Detailed Corner Tour Section -->
+    <div class="text-center mb-5">
+        <h2 class="display-5 fw-bold mb-3" style="color: var(--primary-color);">🌟 Our Luxurious Rooms - Corner Tour 🌟
+        </h2>
+        <p class="lead text-muted">Explore every corner of our Single and Double Bed suites in detailed high-definition
+            views before booking.</p>
+    </div>
+
+    <div class="row mb-5 g-4">
+        <!-- SINGLE BED ROOM SHOWCASE -->
+        <div class="col-lg-6">
+            <div class="card room-card h-100 shadow-lg border-0">
+                <div class="position-relative overflow-hidden" style="border-radius: 15px 15px 0 0;">
+                    <img id="ssb-main-img"
+                        src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=1200&q=80"
+                        class="card-img-top" alt="Single Bed Suite Corner"
+                        style="height: 340px; object-fit: cover; transition: all 0.5s ease;">
+                    <span
+                        class="position-absolute top-0 start-0 bg-dark text-warning px-3 py-2 m-3 rounded-pill fw-bold small shadow">
+                        <i class="fas fa-bed me-1"></i> Standard Room - Single Bed
+                    </span>
+                    <span id="ssb-corner-badge"
+                        class="position-absolute bottom-0 start-0 bg-primary text-white px-3 py-1 m-3 rounded-pill small fw-semibold">
+                        📍 Corner: Sleeping Area
+                    </span>
+                </div>
+
+                <div class="card-body p-4">
+                    <h4 class="card-title fw-bold text-dark mb-2">AC Single-Bed Luxury Suite</h4>
+                    <p class="card-text text-muted mb-3">Designed for individual travelers seeking comfort, style, and
+                        productivity. Click any corner below to preview:</p>
+
+                    <!-- Corner Thumbnails Navigation -->
+                    <div class="corner-nav d-flex gap-2 mb-4 overflow-auto pb-2">
+                        <button type="button" class="btn btn-outline-primary btn-sm active-corner rounded-pill px-3"
+                            onclick="switchCorner('ssb', 'bed', 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=1200&q=80', '📍 Corner: Sleeping Area', 'Plush single mattress with 400-thread count Egyptian cotton linens & ambient lighting.', this)">
+                            🛏️ Bed Area
+                        </button>
+                        <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-3"
+                            onclick="switchCorner('ssb', 'bath', 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80', '📍 Corner: Bathroom & Shower', 'Ensuite marble bathroom with rainfall hot shower & organic toiletries.', this)">
+                            🚿 Bathroom
+                        </button>
+                        <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-3"
+                            onclick="switchCorner('ssb', 'work', 'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=1200&q=80', '📍 Corner: Work & Entertainment Desk', 'Ergonomic workspace with 43&quot; Smart 4K TV & high-speed Wi-Fi.', this)">
+                            💻 Work Desk
+                        </button>
+                        <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-3"
+                            onclick="switchCorner('ssb', 'coffee', 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80', '📍 Corner: Refreshments & Safe', 'In-room coffee & tea brewing station plus digital laptop safety deposit box.', this)">
+                            ☕ Refreshment
+                        </button>
+                    </div>
+
+                    <!-- Dynamic Corner Details Box -->
+                    <div class="corner-info-box p-3 rounded-3 mb-4"
+                        style="background: #f8fafc; border-left: 4px solid var(--secondary-color);">
+                        <h6 class="fw-bold mb-1" id="ssb-info-title">🛏️ Sleeping Area Highlights:</h6>
+                        <p class="small text-secondary mb-0" id="ssb-info-desc">Plush single mattress with 400-thread
+                            count Egyptian cotton linens & ambient lighting.</p>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fs-5 fw-bold text-success">$1,000 / night</span>
+                        <div>
+                            <button class="btn btn-outline-dark btn-sm rounded-pill me-2"
+                                onclick="openCornerModal('ssb')">
+                                🔍 Full 360° Corners
+                            </button>
+                            <a href="{{ url_for('rooms') }}" class="btn btn-warning btn-sm rounded-pill fw-bold px-3">
+                                View Availability
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DOUBLE BED ROOM SHOWCASE -->
+        <div class="col-lg-6">
+            <div class="card room-card h-100 shadow-lg border-0">
+                <div class="position-relative overflow-hidden" style="border-radius: 15px 15px 0 0;">
+                    <img id="sdb-main-img"
+                        src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80"
+                        class="card-img-top" alt="Double Bed Suite Corner"
+                        style="height: 340px; object-fit: cover; transition: all 0.5s ease;">
+                    <span
+                        class="position-absolute top-0 start-0 bg-dark text-warning px-3 py-2 m-3 rounded-pill fw-bold small shadow">
+                        <i class="fas fa-bed me-1"></i> Standard Room - Double Bed
+                    </span>
+                    <span id="sdb-corner-badge"
+                        class="position-absolute bottom-0 start-0 bg-primary text-white px-3 py-1 m-3 rounded-pill small fw-semibold">
+                        📍 Corner: Master Bedroom
+                    </span>
+                </div>
+
+                <div class="card-body p-4">
+                    <h4 class="card-title fw-bold text-dark mb-2">AC Double-Bed Executive Suite</h4>
+                    <p class="card-text text-muted mb-3">Spacious retreat featuring luxury double bedding, mini-bar, and
+                        panoramic city views. Click any corner below to preview:</p>
+
+                    <!-- Corner Thumbnails Navigation -->
+                    <div class="corner-nav d-flex gap-2 mb-4 overflow-auto pb-2">
+                        <button type="button" class="btn btn-outline-primary btn-sm active-corner rounded-pill px-3"
+                            onclick="switchCorner('sdb', 'bed', 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80', '📍 Corner: Master Bedroom', 'Executive King Double bed with hypoallergenic pillows & dual bedside charging docks.', this)">
+                            🛏️ Master Bed
+                        </button>
+                        <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-3"
+                            onclick="switchCorner('sdb', 'bath', 'https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=1200&q=80', '📍 Corner: Spa Bathroom & Tub', 'Spacious bathroom with deep soaking bathtub, rainfall shower & luxury bathrobes.', this)">
+                            🛀 Spa Bath
+                        </button>
+                        <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-3"
+                            onclick="switchCorner('sdb', 'lounge', 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=1200&q=80', '📍 Corner: Lounge & City View Window', 'Cozy lounge seating area with floor-to-ceiling city skyline view windows.', this)">
+                            🌅 Lounge View
+                        </button>
+                        <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-3"
+                            onclick="switchCorner('sdb', 'bar', 'https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=1200&q=80', '📍 Corner: Stocked Mini Bar & Espresso', 'Fully stocked mini bar, Nespresso coffee machine & electronic digital safe.', this)">
+                            🍷 Mini Bar
+                        </button>
+                    </div>
+
+                    <!-- Dynamic Corner Details Box -->
+                    <div class="corner-info-box p-3 rounded-3 mb-4"
+                        style="background: #f8fafc; border-left: 4px solid var(--secondary-color);">
+                        <h6 class="fw-bold mb-1" id="sdb-info-title">🛏️ Master Bedroom Highlights:</h6>
+                        <p class="small text-secondary mb-0" id="sdb-info-desc">Executive King Double bed with
+                            hypoallergenic pillows & dual bedside charging docks.</p>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fs-5 fw-bold text-success">$1,500 / night</span>
+                        <div>
+                            <button class="btn btn-outline-dark btn-sm rounded-pill me-2"
+                                onclick="openCornerModal('sdb')">
+                                🔍 Full 360° Corners
+                            </button>
+                            <a href="{{ url_for('rooms') }}" class="btn btn-warning btn-sm rounded-pill fw-bold px-3">
+                                View Availability
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -77,7 +204,8 @@
             <div class="card h-100 hover-effect">
                 <div class="card-body">
                     <i class="fas fa-quote-left fa-2x mb-3 icon-animate" style="color: var(--accent-color);"></i>
-                    <p class="card-text">"Absolutely amazing experience! The staff was incredibly helpful and the rooms were beautiful."</p>
+                    <p class="card-text">"Absolutely amazing experience! The staff was incredibly helpful and the rooms
+                        were beautiful."</p>
                     <footer class="blockquote-footer mt-3">John Doe</footer>
                 </div>
             </div>
@@ -95,9 +223,36 @@
             <div class="card h-100 hover-effect">
                 <div class="card-body">
                     <i class="fas fa-quote-left fa-2x mb-3 icon-animate" style="color: var(--accent-color);"></i>
-                    <p class="card-text">"The amenities were top-notch and the staff went above and beyond to make our stay special."</p>
+                    <p class="card-text">"The amenities were top-notch and the staff went above and beyond to make our
+                        stay special."</p>
                     <footer class="blockquote-footer mt-3">Mike Johnson</footer>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Detailed 4-Corner View -->
+<div class="modal fade" id="cornerDetailModal" tabindex="-1" aria-labelledby="cornerDetailModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <div class="modal-header bg-dark text-white py-3 px-4">
+                <div>
+                    <h5 class="modal-title fw-bold" id="modalSuiteTitle">Suite Corner Detailed Tour</h5>
+                    <small class="text-warning" id="modalSuiteSubtitle">Inspect every corner of the room in
+                        detail</small>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4" id="modalCornerContent">
+                <!-- Loaded via JS -->
+            </div>
+            <div class="modal-footer bg-light">
+                <a href="{{ url_for('rooms') }}" class="btn btn-warning rounded-pill px-4 fw-bold">Proceed to Book
+                    Suite</a>
+                <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -107,9 +262,12 @@
 <style>
     :root {
         margin-top: 80px;
-        --primary-color: #2D3047; /* Navy */
-        --secondary-color: #FF6B6B; /* Coral */
-        --accent-color: #FFE66D; /* Gold */
+        --primary-color: #2D3047;
+        /* Navy */
+        --secondary-color: #FF6B6B;
+        /* Coral */
+        --accent-color: #FFE66D;
+        /* Gold */
     }
 
     .hero-section {
@@ -169,14 +327,145 @@
     .animate__animated {
         animation-duration: 1s;
     }
+
+    .corner-nav .btn.active-corner {
+        background-color: var(--primary-color);
+        color: white !important;
+        border-color: var(--primary-color);
+    }
+
+    .corner-card-img {
+        height: 200px;
+        object-fit: cover;
+        border-radius: 12px 12px 0 0;
+    }
 </style>
 
 <!-- Animate.css -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 
-<!-- Script for Animations -->
+<!-- Script for Animations & Corner Tour Interactions -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    function switchCorner(type, cornerKey, imgUrl, badgeText, description, btnEl) {
+        const imgEl = document.getElementById(`${type}-main-img`);
+        const badgeEl = document.getElementById(`${type}-corner-badge`);
+        const titleEl = document.getElementById(`${type}-info-title`);
+        const descEl = document.getElementById(`${type}-info-desc`);
+
+        if (imgEl) imgEl.src = imgUrl;
+        if (badgeEl) badgeEl.innerText = badgeText;
+        if (titleEl) titleEl.innerText = `${badgeText.replace('📍 Corner: ', '')} Highlights:`;
+        if (descEl) descEl.innerText = description;
+
+        // Highlight active corner button
+        const parentNav = btnEl.parentElement;
+        parentNav.querySelectorAll('.btn').forEach(b => b.classList.remove('active-corner', 'btn-primary'));
+        parentNav.querySelectorAll('.btn').forEach(b => b.classList.add('btn-outline-primary'));
+
+        btnEl.classList.remove('btn-outline-primary');
+        btnEl.classList.add('active-corner');
+    }
+
+    function openCornerModal(type) {
+        const modalTitle = document.getElementById('modalSuiteTitle');
+        const modalSubtitle = document.getElementById('modalSuiteSubtitle');
+        const modalBody = document.getElementById('modalCornerContent');
+
+        if (type === 'ssb') {
+            modalTitle.innerText = "Single Bed Suite - Detailed 4-Corner View";
+            modalSubtitle.innerText = "Explore every angle of our $1,000 / night Single Bed accommodation";
+
+            modalBody.innerHTML = `
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card h-100 shadow-sm border-0">
+                            <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=800&q=80" class="corner-card-img" alt="Sleeping Area">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-primary"><i class="fas fa-bed me-1"></i> 1. Sleeping Corner</h6>
+                                <p class="small text-muted">Features a plush single mattress with premium linens, soundproof headboard padding, and customizable ambient side lights.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100 shadow-sm border-0">
+                            <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80" class="corner-card-img" alt="Ensuite Bathroom">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-primary"><i class="fas fa-shower me-1"></i> 2. Bathroom & Hot Shower Corner</h6>
+                                <p class="small text-muted">Private ensuite bathroom featuring a high-pressure rainfall shower head, lit vanity mirror, and luxury toiletries.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100 shadow-sm border-0">
+                            <img src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80" class="corner-card-img" alt="Work Desk">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-primary"><i class="fas fa-laptop me-1"></i> 3. Executive Work & Tech Corner</h6>
+                                <p class="small text-muted">Dedicated workstation with ergonomic chair, multi-region power outlets, 43" Smart 4K TV, and high-speed Wi-Fi.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100 shadow-sm border-0">
+                            <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=800&q=80" class="corner-card-img" alt="Refreshment Bar">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-primary"><i class="fas fa-mug-hot me-1"></i> 4. Refreshment & Storage Corner</h6>
+                                <p class="small text-muted">Complimentary coffee & tea brewing station, electric kettle, built-in wardrobe, and electronic digital laptop safe.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else {
+            modalTitle.innerText = "Double Bed Suite - Detailed 4-Corner View";
+            modalSubtitle.innerText = "Explore every angle of our $1,500 / night Executive Double Bed accommodation";
+
+            modalBody.innerHTML = `
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card h-100 shadow-sm border-0">
+                            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80" class="corner-card-img" alt="Master Bedroom">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-primary"><i class="fas fa-bed me-1"></i> 1. Master Sleeping Corner</h6>
+                                <p class="small text-muted">Luxurious King-size double bed with hypoallergenic pillows, dual nightstands, and touch-sensitive bedside lighting.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100 shadow-sm border-0">
+                            <img src="https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=800&q=80" class="corner-card-img" alt="Spa Bathroom">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-primary"><i class="fas fa-bath me-1"></i> 2. Spa Bathroom & Soaking Tub Corner</h6>
+                                <p class="small text-muted">Expansive bathroom complete with deep soaking tub, separate rainfall shower, plush bathrobes, and luxury towels.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100 shadow-sm border-0">
+                            <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=800&q=80" class="corner-card-img" alt="Lounge Window">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-primary"><i class="fas fa-couch me-1"></i> 3. Lounge & City View Corner</h6>
+                                <p class="small text-muted">Comfortable leather lounge seating area positioned next to floor-to-ceiling windows with panoramic city views.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100 shadow-sm border-0">
+                            <img src="https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=800&q=80" class="corner-card-img" alt="Mini Bar & Coffee">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-primary"><i class="fas fa-wine-glass me-1"></i> 4. Mini Bar & Beverage Corner</h6>
+                                <p class="small text-muted">Fully stocked mini bar refrigerator, Nespresso coffee machine, digital safe box, and spacious luggage storage area.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        const modal = new bootstrap.Modal(document.getElementById('cornerDetailModal'));
+        modal.show();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
         const elements = document.querySelectorAll('.animate__animated');
         elements.forEach(el => {
             el.style.opacity = '0';
@@ -194,16 +483,11 @@
         elements.forEach(el => {
             observer.observe(el);
         });
-
-
     });
-
-
 
     if (window.history && window.history.pushState) {
         window.history.pushState('forward', null, './');
         window.history.forward(1);
     }
-
 </script>
 {% endblock %}

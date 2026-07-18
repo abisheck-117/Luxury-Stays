@@ -2,33 +2,102 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <title>Room Price List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Dynamic Tariff Recommendations - Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 1.5rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .card-custom {
+            border-radius: 16px;
+            border: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            background: #ffffff;
+            margin-bottom: 2rem;
+        }
+
+        .table-responsive {
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+
+        .table th {
+            background: #0f172a;
+            color: #f8fafc;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 1rem;
+            white-space: nowrap;
+        }
+
+        .table td {
+            padding: 1rem;
+            white-space: nowrap;
+        }
+    </style>
 </head>
 <body>
+    <header class="admin-header">
+        <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <h2 class="mb-0 fw-bold"><i class="fas fa-chart-line me-2 text-warning"></i>ML Dynamic Tariff Predictions</h2>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-light btn-sm rounded-pill px-4">
+                <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+            </a>
+        </div>
+    </header>
 
-    <h1>Room Price List</h1>
-    
-    <!-- Display the price list dynamically -->
-    <table class="price-table">
-        <tr>
-            <th>Room Type</th>
-            <th>Price (INR)</th>
-        </tr>
-        {% for room_type,price in result.items() %}
-            <tr>
-                <td>
-                    {% if room_type == 0 %}
-                        Standard Room - Single Bed
-                    {% else %}
-                        Standard Room - Double Bed
-                    {% endif %}
-                </td>
-                <td>₹{{ price["final_price"] }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+    <main class="container">
+        <div class="card card-custom p-4">
+            <div class="mb-3">
+                <h4 class="fw-bold mb-1 text-primary"><i class="fas fa-robot me-2"></i>Recommended Optimized Prices</h4>
+                <p class="text-muted small">Calculated using our Random Forest Regression demand analytics engine.</p>
+            </div>
 
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Room Category</th>
+                            <th>Recommended Optimized Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for room_type, price in result.items() %}
+                            <tr>
+                                <td class="fw-semibold">
+                                    {% if room_type == 0 %}
+                                        <i class="fas fa-bed text-warning me-2"></i>Standard Room - Single Bed
+                                    {% else %}
+                                        <i class="fas fa-hotel text-info me-2"></i>Standard Room - Double Bed
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge bg-success fs-6 px-3 py-2">₹{{ price["final_price"] }}</span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
