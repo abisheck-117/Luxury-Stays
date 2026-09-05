@@ -19,13 +19,49 @@ CORS(app)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', '5f8c3b1a9d7e4f2c6a0b8e1d3c7f9a4e')
 
 # ✅ Production & Local MongoDB Connection Support
-mongo_uri = os.environ.get('MONGO_URI') or os.environ.get('MONGODB_URI') or "mongodb://localhost:27017/"
-client = MongoClient(mongo_uri)
+try:
+    import certifi
+    ca_file = certifi.where()
+except Exception:
+    ca_file = None
 
-if os.environ.get('MONGO_URI') or os.environ.get('MONGODB_URI'):
-    db = client.get_default_database(default='hotel_management')
-else:
+mongo_uri = os.environ.get('MONGO_URI') or os.environ.get('MONGODB_URI') or "mongodb://localhost:27017/"
+client_kwargs = {
+    'serverSelectionTimeoutMS': 5000,
+    'connectTimeoutMS': 5000,
+    'socketTimeoutMS': 10000,
+    'maxPoolSize': 50
+}
+if ca_file and "mongodb+srv://" in mongo_uri:
+    client_kwargs['tlsCAFile'] = ca_file
+
+client = MongoClient(mongo_uri, **client_kwargs)
+
+try:
+    if os.environ.get('MONGO_URI') or os.environ.get('MONGODB_URI'):
+        db = client.get_default_database(default='hotel_management')
+    else:
+        db = client["hotel_management"]
+except Exception:
     db = client["hotel_management"]
+
+# ✅ Preload and cache Random Forest ML model for instant responses
+MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'se_model.pkl')
+tariff_model = None
+
+def get_tariff_model():
+    global tariff_model
+    if tariff_model is None:
+        try:
+            if os.path.exists(MODEL_PATH):
+                with open(MODEL_PATH, "rb") as f:
+                    tariff_model = pickle.load(f)
+                print("Tariff prediction ML model successfully loaded & cached into memory.")
+        except Exception as e:
+            print("Warning: ML model could not be loaded:", e)
+    return tariff_model
+
+get_tariff_model()
 
 # ✅ Auto-seed rooms database if empty (ensures deployed site has rooms)
 def init_db_rooms():
@@ -864,20 +900,15 @@ def release_room(room_number):
 def predict():
     # Room price mapping
     room_prices = {0: 1000, 1: 1500}  # 0 = Single Bed, 1 = Double Bed
-    # Connect to MongoDB (Update URI if required)
-    client = MongoClient("mongodb://localhost:27017/")
-    db = client["hotel_management"]  # Database name
-    collection = db["allbookings"]  # Collection where booking data is stored
+    collection = db["allbookings"]  # Use active database collection
 
-    # Load trained Random Forest model
-    with open("se_model.pkl", "rb") as f:
-        model = pickle.load(f)
+    # Use cached Random Forest model
+    model = get_tariff_model()
 
-    room_prices = {0: 1000, 1: 1500}
-    room_types = ["Standard Room - Single Bed" ,"Standard Room - Double Bed"]  # 0 for Single Bed, 1 for Double Bed
-    mapping={
-        "Standard Room - Single Bed" : 0,
-        "Standard Room - Double Bed" : 1
+    room_types = ["Standard Room - Single Bed", "Standard Room - Double Bed"]
+    mapping = {
+        "Standard Room - Single Bed": 0,
+        "Standard Room - Double Bed": 1
     }
     result = {}
 
@@ -888,9 +919,9 @@ def predict():
         # Step 2: Count number of rooms filled of that type
         num_rooms_filled = len(bookings)
 
-        # If no rooms are filled, set default price and skip calculation
-        if num_rooms_filled == 0:
-            result[encoded_room_type] = {"final_price" : room_prices[encoded_room_type] }  # Default price for the room type
+        # If no rooms are filled or model not available, set default price and skip calculation
+        if num_rooms_filled == 0 or model is None:
+            result[encoded_room_type] = {"final_price": room_prices[encoded_room_type]}
         else:
             # Step 3: Calculate total number of days stayed
             total_days_stayed = sum((pd.to_datetime(b["check_out"]) - pd.to_datetime(b["check_in"])).days for b in bookings)
@@ -901,16 +932,15 @@ def predict():
             # Step 5: Predict profit/loss percentage using trained model
             input_data = np.array([[encoded_room_type, total_days_stayed, num_rooms_filled, total_price]])
             profit_loss_percentage = model.predict(input_data)[0]
-            print(total_days_stayed,total_price)
             # Step 6: Calculate adjusted profit/loss
-            final_price = ((profit_loss_percentage / 100) * room_prices[encoded_room_type])+room_prices[encoded_room_type]
+            final_price = ((profit_loss_percentage / 100) * room_prices[encoded_room_type]) + room_prices[encoded_room_type]
 
-        # Store the results for this room type
+            # Store the results for this room type
             result[encoded_room_type] = {
-            "final_price": round(final_price, 2)
-        }
+                "final_price": round(final_price, 2)
+            }
 
-    # You can pass data to the template here
+    # Pass data to the template
     return render_template('admin_tariff.html', result=result)
 
 

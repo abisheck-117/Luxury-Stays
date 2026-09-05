@@ -208,10 +208,15 @@ class HotelManagementTestSuite(unittest.TestCase):
         self.assertEqual(self.test_db.bookings.count_documents({}), 0)
 
         # Scenario B: Valid Date Range
+        future_checkin = (datetime.today() + timedelta(days=5)).strftime('%Y-%m-%d')
+        future_checkout = (datetime.today() + timedelta(days=7)).strftime('%Y-%m-%d')
+        future_checkin_dt = datetime.strptime(future_checkin, '%Y-%m-%d')
+        future_checkout_dt = datetime.strptime(future_checkout, '%Y-%m-%d')
+
         booking_data_valid = {
             'room_number': 'SSB-TEST-1',
-            'check_in': '2026-08-10',
-            'check_out': '2026-08-12', # 2 days stay
+            'check_in': future_checkin,
+            'check_out': future_checkout, # 2 days stay
             'num_persons': '2'
         }
         resp_valid = self.flask_client.post('/rooms', data=booking_data_valid)
@@ -222,14 +227,14 @@ class HotelManagementTestSuite(unittest.TestCase):
         self.assertIsNotNone(booking)
         self.assertEqual(booking['user_token'], 'LUX-ABI-1234')
         self.assertEqual(booking['num_persons'], '2')
-        self.assertEqual(booking['check_in'], datetime(2026, 8, 10))
-        self.assertEqual(booking['check_out'], datetime(2026, 8, 12))
+        self.assertEqual(booking['check_in'], future_checkin_dt)
+        self.assertEqual(booking['check_out'], future_checkout_dt)
 
         # Check room status updated to booked
         room = self.test_db.rooms.find_one({'room_number': 'SSB-TEST-1'})
         self.assertEqual(room['status'], 'booked')
         self.assertEqual(room['user_token'], 'LUX-ABI-1234')
-        self.assertEqual(room['free_date'], datetime(2026, 8, 12))
+        self.assertEqual(room['free_date'], future_checkout_dt)
 
     # ==========================================
     # ADMIN FUNCTIONALITY TESTS

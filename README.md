@@ -2,7 +2,7 @@
 
 A comprehensive, full-stack web application built with **Flask**, **MongoDB / MongoDB Atlas**, and **Gunicorn** for managing hotel bookings, customer loyalty rewards, and automated room tariff adjustments. The project integrates a **Random Forest Regressor** machine learning model to recommend optimized pricing tariffs based on historical stay demands and occupancy rates.
 
-🌐 **Live Production Deployment**: [https://luxury-stays-qyem.onrender.com](https://luxury-stays-qyem.onrender.com)
+🌐 **Production Deployment (Vercel Serverless & Edge CDN)**: [https://luxury-stays.vercel.app](https://luxury-stays.vercel.app) *(or connect your own custom Vercel domain)*
 
 ---
 
@@ -27,31 +27,60 @@ A comprehensive, full-stack web application built with **Flask**, **MongoDB / Mo
 *   **Manage Tariffs**: Dynamic pricing recommendations predicted using the Random Forest regression model.
 
 ### 🤖 Machine Learning Tariff Predictor
-*   Loads a pre-trained Random Forest model (`se_model.pkl`).
+*   Loads a pre-trained Random Forest model (`se_model.pkl`) pre-cached in memory for sub-second response times.
 *   Analyzes historical stay indicators: `[room_type, total_days_stayed, occupancy_count, base_revenue]`.
 *   Predicts a demand-based profit/loss percentage and recommends an optimized dynamic tariff.
 
 ---
 
 ## 🛠️ Technology Stack
-*   **Backend**: Python, Flask, PyMongo, scikit-learn, pandas, numpy, Gunicorn
+*   **Backend**: Python, Flask, PyMongo, scikit-learn, pandas, numpy
 *   **Frontend**: HTML5, Vanilla CSS3, JavaScript, Bootstrap 5, FontAwesome
 *   **Database**: MongoDB (Local Instance) & MongoDB Atlas (Cloud Database)
-*   **Deployment**: Render (Production Cloud Host), Vercel configuration, Gunicorn WSGI
-*   **Testing**: Python unittest framework
+*   **Cloud Deployment**: Vercel (Edge Functions & CDN)
+*   **Testing**: Python unittest framework (12 automated unit tests)
 
 ---
 
-## 🚀 Deployment & Local Setup Instructions
+## 🚀 Ultra-Fast Cloud Deployment (Vercel)
 
-### Live Cloud Deployment (Render + MongoDB Atlas)
-The project is configured with a 1-click build setup:
-*   `Procfile`: `web: gunicorn app:app`
-*   `PYTHON_VERSION`: `3.10.13`
-*   `render.yaml`: Automated build and start configuration.
-*   Auto-seeding database helper initializes default rooms and admin user if cloud database is fresh.
+Vercel provides sub-second global response times and instantaneous serverless execution:
 
-### Local Setup Instructions
+1. **Install Vercel CLI** (or import the GitHub repository in [vercel.com](https://vercel.com)):
+   ```bash
+   npm i -g vercel
+   ```
+2. **Deploy from project directory**:
+   ```bash
+   vercel
+   ```
+3. **Configure Environment Variables** in the Vercel Project Settings:
+   * `MONGO_URI`: Your MongoDB Atlas Connection String (`mongodb+srv://<username>:<password>@cluster0.mongodb.net/hotel_management?retryWrites=true&w=majority`)
+   * `SECRET_KEY`: Random 32+ character string for Flask secure sessions (e.g., `cfsk_prod_luxury_stays_secret_key_2026`)
+4. **Deploy to Production**:
+   ```bash
+   vercel --prod
+   ```
+
+---
+
+## 🐳 Docker Plug & Play (Optional Container Deployment)
+
+A production-ready [`Dockerfile`](Dockerfile) and [`.dockerignore`](.dockerignore) are included for containerized environments (AWS ECS, Google Cloud Run, DigitalOcean, or local Docker Desktop):
+
+1. **Build the Docker Image**:
+   ```bash
+   docker build -t luxury-stays .
+   ```
+2. **Run the Container**:
+   ```bash
+   docker run -p 5000:5000 -e MONGO_URI="your_mongodb_uri" -e SECRET_KEY="your_secret_key" luxury-stays
+   ```
+3. Open [http://localhost:5000](http://localhost:5000) to view the running container.
+
+---
+
+### 💻 Local Setup Instructions
 
 #### Prerequisite
 Ensure a local instance of **MongoDB** is running on your system at `mongodb://localhost:27017/`.

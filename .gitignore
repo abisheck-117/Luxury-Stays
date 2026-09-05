@@ -27,3 +27,5 @@ Thumbs.db
 *.log
 .env
 api.txt
+.vercel
+.env*
