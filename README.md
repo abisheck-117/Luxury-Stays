@@ -162,12 +162,15 @@ python test_suite.py
 ### 🛡️ Administration Views
 
 #### Admin Login Screen
-<img width="1013" height="341" alt="image" src="https://github.com/user-attachments/assets/8b304a50-c97a-4fc8-914c-cb13c357bf39" />
+<img width="1917" height="268" alt="image" src="https://github.com/user-attachments/assets/b476d9bb-465c-474d-af67-ae923cffc5a4" />
+
 
 #### Admin Dashboard (Bookings Panel) - Aditional with user management and dynamic tariff predictions
-<img width="1912" height="418" alt="image" src="https://github.com/user-attachments/assets/491b3e41-3204-4c90-bd9b-07a06e4c7e0d" />
+<img width="1917" height="483" alt="image" src="https://github.com/user-attachments/assets/e147041c-c35c-4432-8364-52513ec50f29" />
+
 
 
 #### Admin Room Access Control Management - url(admin/admin_room_access)
 
-<img width="1912" height="648" alt="image" src="https://github.com/user-attachments/assets/a82aceb6-dff8-4bc2-b132-6f4dbff3d5fa" />
+<img width="1895" height="622" alt="image" src="https://github.com/user-attachments/assets/bfebdc67-2243-4759-9876-ae6e77abfa98" />
+
