@@ -1,4 +1,11 @@
 import os
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+    load_dotenv('.env.local')
+except Exception:
+    pass
+
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from flask_cors import CORS
 from pymongo import MongoClient
@@ -25,7 +32,13 @@ try:
 except Exception:
     ca_file = None
 
-mongo_uri = os.environ.get('MONGO_URI') or os.environ.get('MONGODB_URI') or "mongodb://localhost:27017/"
+raw_mongo_uri = os.environ.get('MONGO_URI') or os.environ.get('MONGODB_URI')
+# Ignore placeholder URIs containing unresolved angle brackets
+if raw_mongo_uri and ("<username>" in raw_mongo_uri or "<password>" in raw_mongo_uri or "<db_username>" in raw_mongo_uri or "<db_password>" in raw_mongo_uri):
+    mongo_uri = "mongodb://localhost:27017/"
+else:
+    mongo_uri = raw_mongo_uri or "mongodb://localhost:27017/"
+
 client_kwargs = {
     'serverSelectionTimeoutMS': 5000,
     'connectTimeoutMS': 5000,
@@ -35,14 +48,15 @@ client_kwargs = {
 if ca_file and "mongodb+srv://" in mongo_uri:
     client_kwargs['tlsCAFile'] = ca_file
 
-client = MongoClient(mongo_uri, **client_kwargs)
-
 try:
-    if os.environ.get('MONGO_URI') or os.environ.get('MONGODB_URI'):
+    client = MongoClient(mongo_uri, **client_kwargs)
+    if raw_mongo_uri and mongo_uri != "mongodb://localhost:27017/":
         db = client.get_default_database(default='hotel_management')
     else:
         db = client["hotel_management"]
-except Exception:
+except Exception as e:
+    print(f"Warning: Initializing MongoClient failed for URI ({e}). Falling back to local MongoDB.")
+    client = MongoClient("mongodb://localhost:27017/", serverSelectionTimeoutMS=5000)
     db = client["hotel_management"]
 
 # ✅ Preload and cache Random Forest ML model for instant responses

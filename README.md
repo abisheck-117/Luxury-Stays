@@ -2,7 +2,7 @@
 
 A comprehensive, full-stack web application built with **Flask**, **MongoDB / MongoDB Atlas**, and **Gunicorn** for managing hotel bookings, customer loyalty rewards, and automated room tariff adjustments. The project integrates a **Random Forest Regressor** machine learning model to recommend optimized pricing tariffs based on historical stay demands and occupancy rates.
 
-🌐 **Production Deployment (Vercel Serverless & Edge CDN)**: [https://luxury-stays.vercel.app](https://luxury-stays.vercel.app) *(or connect your own custom Vercel domain)*
+🌐 **Live Production Deployment (Vercel Serverless & Edge CDN)**: [https://luxurystays-amak1.vercel.app](https://luxurystays-amak1.vercel.app)
 
 ---
 
