@@ -172,5 +172,6 @@ python test_suite.py
 
 #### Admin Room Access Control Management - url(admin/admin_room_access)
 
-<img width="1895" height="622" alt="image" src="https://github.com/user-attachments/assets/bfebdc67-2243-4759-9876-ae6e77abfa98" />
+<img width="1835" height="880" alt="image" src="https://github.com/user-attachments/assets/bc37c41c-4abd-40b6-8191-6afb2ef338a1" />
+
 
